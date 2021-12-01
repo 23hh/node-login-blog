@@ -8,7 +8,7 @@ const router = express.Router();
 // password = /^[a-zA-Z0-9]{4,30}$/;
 
 
-const postUsersSchema = Joi.object({
+const UsersSchema = Joi.object({
     nickname: Joi.string().required().min(3).alphanum(),
     password: Joi.string().required().min(4),
     confirmPassword: Joi.string().required(),
@@ -17,7 +17,7 @@ const postUsersSchema = Joi.object({
   router.post('/', async (req, res) => {
     try {
       const { nickname, password, confirmPassword } =
-        await postUsersSchema.validateAsync(req.body);
+        await UsersSchema.validateAsync(req.body);
   
       if (password !== confirmPassword) {
         res.status(400).send('패스워드가 패스워드 확인란과 동일하지 않습니다.');

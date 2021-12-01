@@ -5,7 +5,6 @@ const Posts = require("../models/posts");
 
 router.route("/").get(async (req, res, next) => {
   const posts = await Posts.find({}).sort("-date");
-  console.log(posts);
   res.json({ posts: posts });
 });
 
@@ -15,7 +14,6 @@ moment.tz.setDefault('Asia/Seoul');
 
 router.route("/").get(async (req, res) => {
   const { title, content } = req.body;
-  console.log(title)
   const date = moment().format('YYYY-MM-DD HH:mm:ss');
 
   isExist = await Posts.find({ title });

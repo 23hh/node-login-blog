@@ -51,11 +51,13 @@
   }
 
   function make_tr(post) {
-    const { postId, nickname, title } = post;
+    const { postId, nickname, title, date } = post;
+    console.log(date)
     const temp_html = `<tr>
                 <th scope="row">${postId}</th>
                 <td>${nickname}</td>
                 <td><a href="/posts/${postId}">${title}</a></td>
+                <td>${date}</td>
             </tr>`
     $('#table_body').append(temp_html);
   }
@@ -93,12 +95,14 @@
           <colgroup>
             <col style="width:10%" />
             <col style="width:15%" />
-            <col style="width:75%" />
+            <col style="width:50%" />
+            <col style="width:25%" />
           </colgroup>
           <tr>
             <th scope="col">#</th>
             <th scope="col">User</th>
             <th scope="col">Title</th>
+            <th scope="col">Date</th>
           </tr>
         </thead>
         <tbody id="table_body">
