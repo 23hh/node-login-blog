@@ -1,9 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const User = require("../models/users");
 const Posts = require("../models/posts");
-const Comment = require("../models/comment");
 
 router.route("/").get(async (req, res, next) => {
   const posts = await Posts.find({}).sort("-date");

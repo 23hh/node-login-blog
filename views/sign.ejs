@@ -21,10 +21,10 @@
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
     <!--    Javascript-->
-    <script src="/htmlApi.js"></script>
+    <!-- <script src="/htmlApi.js"></script> -->
 
     <!--    Include CSS -->
-    <link href="/meStyleSheet.css" rel="stylesheet"/>
+    <!-- <link href="/meStyleSheet.css" rel="stylesheet"/> -->
 
 
 </head>
@@ -33,16 +33,17 @@
             const nickname = $("#Nickname").val();
             const password1 = $("#Password1").val();
             const password2 = $("#Password2").val();
+            console.log(password2)
             $.ajax({
                 type: "POST",
-                url: "/api/users",
+                url: "/api/sign",
                 data: {
                     nickname: nickname,
                     password: password1,
                     confirmPassword: password2,
                 },
                 success: function (response) {
-                    location.href = "/index"
+                    location.href = "/login"
                 },
                 error: function (error) {
                     alert(error.responseText);

@@ -1,13 +1,27 @@
 const mongoose = require('mongoose');
+const autoIncrement = require('mongoose-auto-increment');
+autoIncrement.initialize(mongoose.connection);
 
-const UserSchema = new mongoose.Schema({
-  nickname: String,
-  password: String,
+const usersSchema = new mongoose.Schema({
+  userId: {
+    type: Number,
+    required: true,
+    unique: true,
+  },
+  nickname: {
+    type: String,
+    require: true,
+  },
+  password: {
+    type: String,
+    require: true,
+  },
 });
-UserSchema.virtual('userId').get(function () {
-  return this._id.toHexString();
-});
-UserSchema.set('toJSON', {
-  virtuals: true,
-});
-module.exports = mongoose.model('User', UserSchema);
+usersSchema.plugin(autoIncrement.plugin, {
+  model: "Users",
+  field: "userId",
+  startAt: 1,
+  Increment: 1
+})
+
+module.exports = mongoose.model('Users', usersSchema);

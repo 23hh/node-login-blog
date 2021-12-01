@@ -1,9 +1,14 @@
-var mongoose = require('mongoose');
-var autoIncrement = require('mongoose-auto-increment');
+const mongoose = require('mongoose');
+const autoIncrement = require('mongoose-auto-increment');
 autoIncrement.initialize(mongoose.connection);
 
 const { Schema } = mongoose;
 const postsSchema = new Schema({
+  postId: {
+    type: Number,
+    required: true,
+    unique: true,
+  },
   title: {
     type: String,
     required: true,
@@ -20,5 +25,10 @@ const postsSchema = new Schema({
   },
 });
 
-postsSchema.plugin(autoIncrement.plugin, "postId");
+postsSchema.plugin(autoIncrement.plugin, {
+  model: "Posts",
+  field: "postId",
+  startAt: 1,
+  Increment: 1
+})
 module.exports = mongoose.model('Posts', postsSchema);
