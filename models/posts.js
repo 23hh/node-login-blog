@@ -6,19 +6,22 @@ const { Schema } = mongoose;
 const postsSchema = new Schema({
   postId: {
     type: Number,
-    required: true,
     unique: true,
+  },
+  userId: {
+    type: Number,
   },
   title: {
     type: String,
     required: true,
-    unique: true,
   },
   nickname: {
     type: String,
+    required: true,
   },
   content: {
     type: String,
+    required: true,
   },
   date: {
     type: String,

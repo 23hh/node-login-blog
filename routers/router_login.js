@@ -6,17 +6,11 @@ const authMiddleware = require("../middlewares/auth_middleware");
 
 const router = express.Router();
 
-const postAuthSchema = Joi.object({
-  nickname: Joi.string().required(),
-  password: Joi.string().required(),
-});
-
 router.post("/", async (req, res) => {
   try {
-    const { nickname, password } = await postAuthSchema.validateAsync(req.body); 
+    const { nickname, password } = req.body;
     const users = await Users.findOne({ nickname, password }).exec(); 
 
-  
     if (!users) {
       res.status(400).send({
         errorMessage: "닉네임 또는 패스워드가 잘못됐습니다.",
@@ -24,12 +18,10 @@ router.post("/", async (req, res) => {
       return; 
     }
     
-    const token = jwt.sign({ userId: users.userId }, "hyeop-secret-key"); 
-   
+    const token = jwt.sign({ userId: users['userId'] }, "hyeop-secret-key"); 
 
     res.send({
       token,
-      result: "success",
     });
   } catch (err) {
     console.log(err);

@@ -3,7 +3,7 @@ const autoIncrement = require('mongoose-auto-increment');
 autoIncrement.initialize(mongoose.connection);
 
 const { Schema } = mongoose;
-const postsSchema = new Schema({
+const commentsSchema = new Schema({
   commentId: {
     type: Number,
     required: true,
@@ -19,9 +19,11 @@ const postsSchema = new Schema({
   },
   nickname: {
     type: String,
+    required: true,
   },
   conmment: {
     type: String,
+    required: true,
   },
   date: {
     type: String,
@@ -34,4 +36,4 @@ commentsSchema.plugin(autoIncrement.plugin, {
   Increment: 1
 })
 
-module.exports = mongoose.model('Comment', CommentSchema);
+module.exports = mongoose.model('Comment', commentsSchema);

@@ -20,10 +20,10 @@
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
     <!--    Javascript-->
-    <!-- <script src="/htmlApi.js"></script> -->
+    <script src="../assets/htmlApi.js"></script>
 
     <!--    Include CSS -->
-    <!-- <link href="/meStyleSheet.css" rel="stylesheet"/> -->
+    <link href="/meStyleSheet.css" rel="stylesheet"/>
 
 </head>
 <style>
@@ -35,7 +35,6 @@
     function writePost() {
         const title = $('#title').val();
         const content = $('#content').val();
-        console.log(title)
         $.ajax({
             type: "POST",
             url: "/api/posts",
