@@ -17,20 +17,14 @@ router.route("/").get(async (req, res, next) => {
 });
 
 var moment = require('moment');
-const { route } = require(".");
 require('moment-timezone');
 moment.tz.setDefault('Asia/Seoul');
-
-router.get('/:postId',  async (req, res, next) => {
-  const { postId } = req.params;
-  const posts = await Posts.findOne({postId: postId});
-  res.json({posts});
-});
 
 router.post("/", authMiddleware, async (req, res) => {
   const { title, content } = await req.body;
   const nickname = res.locals.user.nickname;
   const userId = res.locals.user.userId;
+  console.log(nickname)
 
   const date = moment().format('YYYY-MM-DD HH:mm:ss');
 

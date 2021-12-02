@@ -1,5 +1,5 @@
 const express = require('express');
-const {Posts} = require("../models/posts");
+const Posts = require("../models/posts");
 const router = express.Router();
 
 router.get('/', (req, res, next) => {
@@ -38,16 +38,19 @@ router.get('/write', (req, res, next) => {
 
 router.get('/posts/:postId', async (req, res, next) => {
     try{
-        const {postId} = req.parmas;
-        res.render("post", {Posts});
+        const { postId } = req.params;
+        const post = await Posts.findOne({ postId: postId }).exec();
+        console.log(post)
+        res.render("post", post);
     } catch (error) {
         res.render('error');
     }
 });
 
+
 router.get('/modify/:postId', async (req, res, next) => {
     try{
-        const {postId} = req.parmas;
+        const postId = req.params;
         res.render("post", {Posts});
     } catch (error) {
         res.render('error');

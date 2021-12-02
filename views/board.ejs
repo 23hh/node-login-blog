@@ -22,7 +22,7 @@
   <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
   <!--    Javascript-->
-  <script src="../assets/htmlApi.js"></script>
+  <script src="/htmlApi.js"></script>
 
   <!--    Include CSS -->
   <!-- <link href="/meStyleSheet.css" rel="stylesheet" /> -->
@@ -62,7 +62,6 @@
 
   function make_tr(post) {
     const { postId, nickname, title, date } = post;
-    console.log(date)
     const temp_html = `<tr>
                 <th scope="row">${postId}</th>
                 <td>${nickname}</td>

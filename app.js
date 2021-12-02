@@ -20,7 +20,7 @@ app.use(express.json());
 
 app.use('/', express_render); //Render 폴더 적용
 app.use('/api', express_router); //Router 폴더 적용
-app.use(express.static("assets")); // assets 폴더 공유
+app.use(express.static("assets")); 
 
 app.listen(port, () => {
   console.log('연결이 완료 되었습니다.');
