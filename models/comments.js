@@ -21,7 +21,7 @@ const commentsSchema = new Schema({
     type: String,
     required: true,
   },
-  conmment: {
+  comment: {
     type: String,
     required: true,
   },
@@ -30,10 +30,10 @@ const commentsSchema = new Schema({
   },
 });
 commentsSchema.plugin(autoIncrement.plugin, {
-  model: "comments",
+  model: "Comments",
   field: "conmmentId",
   startAt: 1,
   Increment: 1
 })
 
-module.exports = mongoose.model('Comment', commentsSchema);
+module.exports = mongoose.model('Comments', commentsSchema);

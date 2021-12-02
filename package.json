@@ -15,7 +15,9 @@
     "mongoose-auto-increment": "^5.0.1",
     "nodemon": "^2.0.15"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "morgan": "^1.10.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon app"
