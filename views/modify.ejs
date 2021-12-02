@@ -1,21 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-
     <!--    BootStrap Library-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-            crossorigin="anonymous"></script>
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-            crossorigin="anonymous"></script>
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-            crossorigin="anonymous"></script>
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
 
     <!--    JQuery-->
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
@@ -24,46 +25,95 @@
     <script src="/htmlApi.js"></script>
 
     <!--    Include CSS -->
-    <link href="/meStyleSheet.css" rel="stylesheet"/>
-
+    <!-- <link href="/meStyleSheet.css" rel="stylesheet" /> -->
 
 </head>
+<style>
+
+</style>
 <script>
+    // console.log(location.pathname.split("/"));
+
+    $(document).ready(function () {
+        getDetail()
+    });
+
+    function getDetail() {
+        const postId = location.pathname.split('/')[2]
+        console.log(postId)
+        $.ajax({
+            type: "GET",
+            url: `/api/posts/${postId}`,
+            data: {},
+            headers: {
+                authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+            error: function (xhr, status, error) {
+                if (status == 404) {
+                    alert("존재하지 않는 글입니다.");
+                }
+                window.location.href = "/";
+            },
+            success: function (response) {
+                let postDetail = response["detail"];
+                $("#title").text(postDetail["title"]);
+                $("#content").text(postDetail["content"]);
+                sessionStorage.setItem("title", postDetail["title"]);
+                sessionStorage.setItem("content", postDetail["content"]);
+            },
+        });
+    }
+
+    function modifyPost() {
+        const postId = location.pathname.split('/')[2]
+        const title = $('#title').val()
+        const content = $('#content').val()
+
+        $.ajax({
+            type: "PATCH",
+            url: `/api/posts/${postId}`,
+            headers: {
+                authorization: `Bearer ${localStorage.getItem("token")}`
+            },
+            data: { title, content },
+            success: function (response) {
+                location.href = `/posts/${location.pathname.split("/")[2]}`
+            },
+            error: function (error) {
+                alert(error.responseJSON.errorMessage)
+            },
+        });
+
+    }
 
 
 </script>
+
 <body>
 
-<div>
+    <div>
 
-    <div class="post-body">
-        <button id="btn_post" type="button" class="btn btn-dark" onclick="redirectWrite()">게시글 작성</button>
-        <button id="btn_login" type="button" class="btn btn-dark" onclick="redirectLogin()">로그인</button>
-        <button id="btn_logout" type="button" class="btn btn-dark" onclick="logout()" style="display: none">로그아웃
-        </button>
-        <table class="table">
-            <thead class="thead-light">
-            <colgroup>
-                <col style="width:10%"/>
-                <col style="width:15%"/>
-                <col style="width:75%"/>
-            </colgroup>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">User</th>
-                <th scope="col">Title</th>
-            </tr>
-            </thead>
-            <tbody id="table_body">
+        <div class="post-body">
+            <div>
+                <button type="button" class="btn btn-primary" onclick="modifyPost()">수정</button>
+                <button type="button" class="btn btn-secondary" onclick="location.href='/'">취소</button>
+            </div>
+
+            <label for="title">title</label>
+            <textarea class="form-control" id="title" rows="1"></textarea>
+
+            <div class="form-group">
+                <label for="content">Content</label>
+                <textarea class="form-control" id="content" rows="10"></textarea>
+            </div>
 
 
-            </tbody>
-        </table>
+        </div>
+
+
     </div>
 
 
-</div>
-
-
 </body>
+
 </html>

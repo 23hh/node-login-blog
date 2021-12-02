@@ -1,21 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
+    <title>상세페이지</title>
 
     <!--    BootStrap Library-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-            crossorigin="anonymous"></script>
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-            crossorigin="anonymous"></script>
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-            crossorigin="anonymous"></script>
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
 
     <!-- Font Awesome CSS -->
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -27,7 +28,7 @@
     <script src="/htmlApi.js"></script>
 
     <!--    Include CSS -->
-    <link href="/meStyleSheet.css" rel="stylesheet"/>
+    <!-- <link href="/meStyleSheet.css" rel="stylesheet" /> -->
 
 </head>
 <style>
@@ -44,7 +45,33 @@
             })
         }
         // getComments()
+        getDetail()
     });
+
+    function getDetail() {
+        const postId = location.pathname.split('/')[2]
+        $.ajax({
+            type: "GET",
+            url: `/api/posts/${postId}`,
+            data: {},
+            headers: {
+                authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+            error: function (xhr, status, error) {
+                if (status == 404) {
+                    alert("존재하지 않는 글입니다.");
+                }
+                window.location.href = "/";
+            },
+            success: function (response) {
+                let postDetail = response["detail"];
+                $("#inputTitle").text(postDetail["title"]);
+                $("#inputContent").text(postDetail["content"]);
+                sessionStorage.setItem("inputTitle", postDetail["title"]);
+                sessionStorage.setItem("inputContent", postDetail["content"]);
+            },
+        });
+    }
 
 
 
@@ -216,59 +243,58 @@
     }
 
 </script>
+
 <body>
 
-<div>
+    <div>
 
 
-    <div class="post-body">
+        <div class="post-body">
 
-        <div>
-            <button id="btnModify{{post.userId}}" type="button" class="btn btn-primary" onclick="modifyPost()"
-                    style="display:none">수정
-            </button>
-            <button type="button" class="btn btn-secondary" onclick="location.href='/'">취소</button>
-        </div>
-
-        <label for="alert_title">Content</label>
-        <div class="alert alert-secondary" role="alert" id="alert_title">
-            {{post.title}}
-        </div>
-
-        <div class="form-group">
-            <label for="content">Content</label>
-            <textarea class="form-control" id="content" rows="10" disabled>{{post.content}}</textarea>
-        </div>
-
-        <table class="table">
-            <thead class="thead-light">
-            <colgroup>
-                <col style="width:10%"/>
-                <col style="width:80%"/>
-                <col style="width:10%"/>
-            </colgroup>
-            </thead>
-
-
-            <tbody id="commentTableBody">
-
-            </tbody>
-        </table>
-
-        <div>
-        <div class="input-group mb-3" id="commentWriteBody">
-            <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon1">Comment</span>
+            <div>
+                <button id="btnModify" type="button" class="btn btn-primary" onclick="modifyPost()" >수정
+                </button>
+                <button type="button" class="btn btn-secondary" onclick="location.href='/'">취소</button>
             </div>
-            <input type="text" class="form-control" aria-label="Username"
-                   aria-describedby="basic-addon1" id="comment" onclick="loginCheck()">
-            <button type="button" class="btn btn-primary" onclick="writeComment()">작성</button>
 
+            <label for="alert_title">Content</label>
+            <div class="alert alert-secondary" role="alert" id="inputTitle">
+            </div>
+
+            <div class="form-group">
+                <label for="content">Content</label>
+                <textarea class="form-control" id="inputContent" rows="10" disabled></textarea>
+            </div>
+
+            <table class="table">
+                <thead class="thead-light">
+                    <colgroup>
+                        <col style="width:10%" />
+                        <col style="width:80%" />
+                        <col style="width:10%" />
+                    </colgroup>
+                </thead>
+
+
+                <tbody id="commentTableBody">
+
+                </tbody>
+            </table>
+
+            <div>
+                <div class="input-group mb-3" id="commentWriteBody">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">Comment</span>
+                    </div>
+                    <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1"
+                        id="comment" onclick="loginCheck()">
+                    <button type="button" class="btn btn-primary" onclick="writeComment()">작성</button>
+
+                </div>
+            </div>
         </div>
-    </div>
-</div>
 
 
 </body>
-</html>
 
+</html>
