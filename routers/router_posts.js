@@ -34,7 +34,7 @@ router.post("/", authMiddleware, async (req, res) => {
 });
 
 //상세페이지조회
-router.get('/:postId', authMiddleware, async (req, res, next) => {
+router.get('/:postId', async (req, res, next) => {
   try{
       const { postId } = req.params;
       const post = await Posts.findOne({ postId: postId }).exec();
