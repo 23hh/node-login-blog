@@ -1,11 +1,25 @@
 const express = require('express');
 const logger = require('morgan');
 const app = express();
-const port = 3000;
+const port = 8080;
 const mongoose = require('mongoose');
 const express_router = require('./routers');
 const express_render = require('./renders');
 app.use(express.static("assets"));
+
+//aws
+// const connect = () => {
+//   mongoose
+//     .connect("mongodb://test:test@localhost:27017/admin", {
+//       useNewUrlParser: true,
+//       useUnifiedTopology: true,
+//     })
+//     .catch(err => console.log(err));
+// };
+// mongoose.connection.on("error", err => {
+//   console.error("몽고디비 연결 에러", err);
+// });
+// module.exports = connect;
 
 mongoose.connect('mongodb://localhost:27017/login-pro', {
   useNewUrlParser: true,

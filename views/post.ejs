@@ -71,6 +71,7 @@
             }
         });
     }
+    
     function getDetail() {
         const postId = location.pathname.split('/')[2]
         $.ajax({
@@ -258,7 +259,6 @@
                 </button>
                 <button type="button" class="btn btn-secondary" onclick="location.href='/'">취소</button>
             </div>
-            <div class="alert alert-secondary" role="alert" id="inputName"></div>
             <label for="alert_title">title</label>
             <div class="alert alert-secondary" role="alert" id="inputTitle">
             </div>
