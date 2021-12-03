@@ -25,7 +25,7 @@
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
     <!--    Javascript-->
-    <script src="/htmlApi.js"></script>
+    <!-- <script src="/htmlApi.js"></script> -->
 
     <!--    Include CSS -->
     <!-- <link href="/meStyleSheet.css" rel="stylesheet" /> -->
@@ -34,18 +34,18 @@
 <style>
 </style>
 <script>
-    let userId;
+    let username;
     $(document).ready(function () {
         // 비회원, 회원 전부 볼 수 있어야하기 때문에 에러가 발생하지 않아야한다.
         if (localStorage.getItem("token")) {
             getSelf(function (user) {
-                userId = user.nickname;
-                console.log(userId)
+                username = user.nickname;
+                console.log(user)
                 $(`#btnModify`).show()
             })
         }
-        getComments()
-        getDetail()
+        getComments();
+        getDetail();
     });
     function getSelf(callback) {
         $.ajax({
@@ -88,7 +88,7 @@
                 sessionStorage.setItem("inputName", postDetail["nickname"]);
                 sessionStorage.setItem("inputTitle", postDetail["title"]);
                 sessionStorage.setItem("inputContent", postDetail["content"]);
-                if (userId == postDetail["nickname"]) {
+                if (username == postDetail["nickname"]) {
                     $(`#btnModify`).show();
                 } else {
                     $(`#btnModify`).hide();
@@ -111,10 +111,8 @@
             data: { token },
             success: function (response) {
                 const comments = response['comments'];
-                console.log(comments)
-                const tokenUserId = response['userId']; //response['userId']가 존재하지 않을 경우 undefined를 설정
                 for (const commentObject of comments) {
-                    makeComment(commentObject, tokenUserId)
+                    makeComment(commentObject)
                 }
             },
             error: function (error) {
@@ -149,7 +147,6 @@
             },
             data: { comment },
             success: function (response) {
-                console.log(response);
             },
             error: function (error) {
                 console.error(error.responseJSON.errorMessage);
@@ -179,11 +176,10 @@
         }
     }
     // 댓글을 UI에 그려주는 함수
-    function makeComment(commentObject, tokenUserId) {
+    function makeComment(commentObject) {
         const { commentId, nickname, comment, userId } = commentObject;
-        console.log(tokenUserId, userId)
-        // 접속한 userId와 댓글 userId가 같을 경우
-        if (userId == tokenUserId) {
+        // 접속한 username와 댓글 nickname가 같을 경우
+        if (username == nickname) {
             const temp_html = `
             <tr id="commentBody${commentId}">
                 <td scope="col">${nickname}</td>
@@ -203,7 +199,7 @@
                 </td>
             </tr>`
             $('#commentTableBody').append(temp_html)
-        } else { // 접속한 userId와 댓글 userId가 다를 경우
+        } else { // 접속한 username와 댓글 nickname가 다를 경우
             const temp_html = `<tr>
                 <td scope="col">${nickname}</td>
                 <td scope="col">${comment}</td>
@@ -228,7 +224,8 @@
             },
             data: { comment },
             success: function (response) { //새로고침
-                location.href = location.href
+                alert(response.result)
+                location.reload();
                 history.go(0);
             },
             error: function (error) {

@@ -36,6 +36,7 @@
 
     $(document).ready(function () {
         getDetail()
+        loginCheck()
     });
 
     function getDetail() {
@@ -84,6 +85,13 @@
             },
         });
 
+    }
+
+    function loginCheck() {
+        if (!localStorage.getItem("token")) {
+            alert("로그인이 필요한 기능입니다.")
+            location.href = "/login"
+        }
     }
 
 

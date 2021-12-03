@@ -11,10 +11,10 @@ const router = express.Router();
 router.get("/:postId", async (req, res, next) => {
   try {
     const { postId } = req.params;
+    //comments db안에 postId로 조회
     const comments = await Comments.find({ postId }).sort("-date");
     res.json({comments});
   } catch (error) {
-      next();
   }
 });
 
@@ -28,11 +28,12 @@ router.post("/:postId", authMiddleware, async (req, res, next) => {
     const nickname = res.locals.user.nickname;
     const { userId } = res.locals.user;
     const { comment } = req.body;
-    console.log(postId, nickname, userId, comment)
 
     const date = moment().format("YYYY-MM-DD HH:mm:ss");
-
+    
     await Comments.create({ postId, nickname, userId, comment, date });
+    res.send({result : "작성 성공"})
+
 });
 
 //댓글 수정
