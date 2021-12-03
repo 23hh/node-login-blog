@@ -23,20 +23,16 @@ require("moment-timezone");
 moment.tz.setDefault("Asia/Seoul");
 
 //댓글 작성
-router.post("/:postId", async (req, res, next) => {
-  try {
+router.post("/:postId", authMiddleware, async (req, res, next) => {
     const { postId } = req.params;
     const nickname = res.locals.user.nickname;
     const { userId } = res.locals.user;
     const { comment } = req.body;
-    console.log(comment)
+    console.log(postId, nickname, userId, comment)
 
     const date = moment().format("YYYY-MM-DD HH:mm:ss");
 
     await Comments.create({ postId, nickname, userId, comment, date });
-  } catch (error) {
-
-  }
 });
 
 //댓글 수정

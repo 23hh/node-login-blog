@@ -18,7 +18,7 @@ router.route("/").get(async (req, res, next) => {
 });
 
 var moment = require('moment');
-require('moment-timezone');
+require('moment-timezone');``
 moment.tz.setDefault('Asia/Seoul');
 
 //게시글저장
@@ -43,19 +43,6 @@ router.get('/:postId', async (req, res, next) => {
       res.render('error');
   }
 });
-
-//수정게시물 보여주기
-// router.get("/:postId", authMiddleware, async (req, res, next) => {
-//   try {
-//     const { postId } = req.params;
-//     console.log(postId)
-//     const post = await Posts.findOne({ postId: postId }).exec();
-//     console.log(post)
-//     res.json({ modify: post });
-//   } catch (error) {
-//     res.render("error");
-//   }
-// });
 
 //게시글 수정
 router.patch("/:postId", async (req, res) => {

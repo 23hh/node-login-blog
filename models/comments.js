@@ -31,7 +31,7 @@ const commentsSchema = new Schema({
 });
 commentsSchema.plugin(autoIncrement.plugin, {
   model: "Comments",
-  field: "conmmentId",
+  field: "commentId",
   startAt: 1,
   Increment: 1
 })
