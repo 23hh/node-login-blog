@@ -17,9 +17,10 @@ router.route("/").get(async (req, res, next) => {
   res.json({ posts: posts });
 });
 
-var moment = require('moment');
-require('moment-timezone');``
-moment.tz.setDefault('Asia/Seoul');
+var moment = require("moment");
+require("moment-timezone");
+``;
+moment.tz.setDefault("Asia/Seoul");
 
 //게시글저장
 router.post("/", authMiddleware, async (req, res) => {
@@ -27,33 +28,36 @@ router.post("/", authMiddleware, async (req, res) => {
   const nickname = res.locals.user.nickname;
   const userId = res.locals.user.userId;
 
-  const date = moment().format('YYYY-MM-DD HH:mm:ss');
+  const date = moment().format("YYYY-MM-DD HH:mm:ss");
 
-  await Posts.create({ nickname, userId, title, content, date});
-  res.send({ result: 'success' });
+  await Posts.create({ nickname, userId, title, content, date });
+  res.send({ result: "success" });
 });
 
 //상세페이지조회
-router.get('/:postId', async (req, res, next) => {
-  try{
-      const { postId } = req.params;
-      const post = await Posts.findOne({ postId: postId }).exec();
-      res.json({ detail : post });
+router.get("/:postId", async (req, res, next) => {
+  try {
+    const { postId } = req.params;
+    const post = await Posts.findOne({ postId: postId }).exec();
+    res.json({ detail: post });
   } catch (error) {
-      res.render('error');
+    res.render("error");
   }
 });
 
 //게시글 수정
-router.patch("/:postId", async (req, res) => {
-  const { postId } = req.params;
-  const { title, content } = req.body;
+router.patch("/:postId", authMiddleware, async (req, res) => {
+  try {
+    const { postId } = req.params;
+    const { title, content } = req.body;
 
-  const isIdInBoard = await Posts.find({ postId });
-  if (isIdInBoard.length > 0) {
-    await Posts.updateOne({ postId: postId }, { $set: { title, content } });
-  } 
-  res.send({ result: "success" });
+    const isIdInBoard = await Posts.find({ postId });
+    if (isIdInBoard.length > 0) {
+      await Posts.updateOne({ postId: postId }, { $set: { title, content } });
+    }
+    res.send({ result: "success" });
+  } catch (error) {}
+    res.render("error");
 });
 
 router.delete("/:postId", async (req, res) => {
