@@ -19,7 +19,6 @@ router.route("/").get(async (req, res, next) => {
 
 var moment = require("moment");
 require("moment-timezone");
-``;
 moment.tz.setDefault("Asia/Seoul");
 
 //게시글저장
@@ -58,7 +57,7 @@ router.patch("/:postId", authMiddleware, async (req, res) => {
 });
 
 
-router.delete("/:postId", async (req, res) => {
+router.delete("/:postId", authMiddleware, async (req, res) => {
   const { postId } = req.params;
 
   const isIdInBoard = await Posts.find({ postId });
