@@ -34,9 +34,19 @@ router.get("/write", (req, res, next) => {
   }
 });
 
-router.get("/posts/:postId", (req, res, next) => {
+router.get("/posts", (req, res, next) => {
   try {
     res.render("post");
+  } catch (error) {
+    res.render("error");
+  }
+});
+
+router.get("posts/:postId", async (req, res, next) => {
+  try {
+    const { postId } = req.params;
+    const post = await Posts.findOne({ postId: postId }).exec();
+    res.json({ detail: post });
   } catch (error) {
     res.render("error");
   }
