@@ -47,7 +47,6 @@ router.get("/:postId", async (req, res, next) => {
 
 //게시글 수정
 router.patch("/:postId", authMiddleware, async (req, res) => {
-  try {
     const { postId } = req.params;
     const { title, content } = req.body;
 
@@ -56,9 +55,8 @@ router.patch("/:postId", authMiddleware, async (req, res) => {
       await Posts.updateOne({ postId: postId }, { $set: { title, content } });
     }
     res.send({ result: "success" });
-  } catch (error) {}
-    res.render("error");
 });
+
 
 router.delete("/:postId", async (req, res) => {
   const { postId } = req.params;
