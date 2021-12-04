@@ -46,6 +46,17 @@ router.patch("/:postId", authMiddleware, async (req, res) => {
 });
 
 
+router.get("/:postId", async (req, res, next) => {
+  try {
+    const { postId } = req.params;
+    const post = await Posts.findOne({ postId: postId }).exec();
+    res.json({ detail: post });
+  } catch (error) {
+    res.render("error");
+  }
+});
+
+//삭제
 router.delete("/:postId", authMiddleware, async (req, res) => {
   const { postId } = req.params;
 
